@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GrantTrack | Research Grant Management</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="brand-icon">
+            <i class="fa-solid fa-building-columns"></i>
+        </div>
+
+        <div>
+            <h2>GrantTrack</h2>
+            <span>Research Grant System</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <button class="nav-item active" data-section="dashboard">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item" data-section="faculty">
+            <i class="fa-solid fa-user-tie"></i>
+            <span>Faculty</span>
+        </button>
+
+        <button class="nav-item" data-section="applications">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>Applications</span>
+        </button>
+
+        <button class="nav-item" data-section="stages">
+            <i class="fa-solid fa-route"></i>
+            <span>Review Stages</span>
+        </button>
+
+        <button class="nav-item" data-section="expenditures">
+            <i class="fa-solid fa-wallet"></i>
+            <span>Expenditures</span>
+        </button>
+
+        <button class="nav-item" data-section="deadlines">
+            <i class="fa-solid fa-clock"></i>
+            <span>Near Deadline</span>
+        </button>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>GrantTrack Backend Connected</span>
+    </div>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main-content">
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <div>
+            <h1 id="pageTitle">Dashboard</h1>
+            <p id="pageSubtitle">
+                Research grant application overview
+            </p>
+        </div>
+
+        <div class="topbar-right">
+
+            <div class="connection-status">
+                <span class="status-dot"></span>
+                Backend Connected
+            </div>
+
+            <div class="date-display" id="currentDate"></div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <section id="dashboard" class="page-section active">
+
+        <div class="welcome-card">
+
+            <div>
+                <span class="eyebrow">RESEARCH GRANT MANAGEMENT</span>
+
+                <h2>
+                    Welcome to <span>GrantTrack</span>
+                </h2>
+
+                <p>
+                    Track research applications, review stages,
+                    committee remarks, budget utilization and deadlines
+                    from one place.
+                </p>
+            </div>
+
+            <div class="welcome-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+        </div>
+
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+
+                <div>
+                    <span>Total Faculty</span>
+                    <strong id="facultyCount">0</strong>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+
+                <div>
+                    <span>Total Applications</span>
+                    <strong id="applicationCount">0</strong>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div>
+                    <span>Approved Grants</span>
+                    <strong id="approvedCount">0</strong>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+
+                <div>
+                    <span>Near Deadline</span>
+                    <strong id="deadlineCount">0</strong>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- DASHBOARD CONTENT -->
+
+        <div class="dashboard-grid">
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Recent Applications</h3>
+                        <p>Latest grant applications</p>
+                    </div>
+
+                    <button
+                            class="text-button"
+                            onclick="showSection('applications')"
+                    >
+                        View All
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                        <tr>
+                            <th>Application</th>
+                            <th>Faculty</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="recentApplicationsBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Deadline Alerts</h3>
+                        <p>Grants requiring attention</p>
+                    </div>
+
+                    <i class="fa-solid fa-bell alert-icon"></i>
+
+                </div>
+
+                <div id="dashboardDeadlines" class="deadline-list">
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FACULTY ================= -->
+
+    <section id="faculty" class="page-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">FACULTY</span>
+                <h2>Faculty Management</h2>
+                <p>Register and view faculty members applying for grants.</p>
+            </div>
+
+        </div>
+
+
+        <div class="content-grid">
+
+            <div class="panel form-panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h3>Add Faculty</h3>
+                        <p>Enter faculty information</p>
+                    </div>
+                </div>
+
+                <form id="facultyForm">
+
+                    <div class="form-group">
+                        <label>Faculty Name</label>
+                        <input
+                                type="text"
+                                id="facultyName"
+                                placeholder="Dr. John Smith"
+                                required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input
+                                type="email"
+                                id="facultyEmail"
+                                placeholder="john@college.edu"
+                                required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input
+                                type="text"
+                                id="facultyDepartment"
+                                placeholder="ECE"
+                                required
+                        >
+                    </div>
+
+                    <button class="primary-button" type="submit">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Faculty
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Faculty List</h3>
+                        <p>Registered faculty members</p>
+                    </div>
+
+                    <button
+                            class="icon-button"
+                            onclick="loadFaculty()"
+                            title="Refresh"
+                    >
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="facultyTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= APPLICATIONS ================= -->
+
+    <section id="applications" class="page-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">APPLICATIONS</span>
+                <h2>Grant Applications</h2>
+                <p>Submit and monitor research grant applications.</p>
+            </div>
+
+        </div>
+
+
+        <div class="panel form-panel-wide">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Submit Grant Application</h3>
+                    <p>Enter the research grant details.</p>
+                </div>
+            </div>
+
+            <form id="applicationForm" class="form-grid">
+
+                <div class="form-group">
+                    <label>Project Title</label>
+                    <input
+                            type="text"
+                            id="applicationTitle"
+                            placeholder="AI Based Research Project"
+                            required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Requested Amount</label>
+                    <input
+                            type="number"
+                            id="requestedAmount"
+                            min="1"
+                            placeholder="500000"
+                            required
+                    >
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Project Abstract / Description</label>
+                    <textarea
+                            id="applicationDescription"
+                            placeholder="Describe the research project..."
+                            required
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Grant Deadline</label>
+                    <input
+                            type="date"
+                            id="applicationDeadline"
+                            required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Faculty</label>
+
+                    <select id="applicationFaculty" required>
+                        <option value="">Select Faculty</option>
+                    </select>
+
+                </div>
+
+                <div class="form-actions full-width">
+
+                    <button class="primary-button" type="submit">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Submit Application
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h3>All Applications</h3>
+                    <p>Track application progress and funding decisions.</p>
+                </div>
+
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input
+                            type="text"
+                            id="applicationSearch"
+                            placeholder="Search applications..."
+                    >
+                </div>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Project</th>
+                        <th>Faculty</th>
+                        <th>Amount</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="applicationTableBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STAGES ================= -->
+
+    <section id="stages" class="page-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">REVIEW PROCESS</span>
+                <h2>Review Stages</h2>
+                <p>
+                    Move applications through review stages and record
+                    committee remarks.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="content-grid">
+
+            <div class="panel form-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Create Review Stage</h3>
+                        <p>Add committee remarks for a stage.</p>
+                    </div>
+
+                </div>
+
+                <form id="stageForm">
+
+                    <div class="form-group">
+                        <label>Application</label>
+
+                        <select id="stageApplication" required>
+                            <option value="">Select Application</option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Stage Name</label>
+
+                        <select id="stageName" required>
+
+                            <option value="">Select Stage</option>
+
+                            <option value="Initial Review">
+                                Initial Review
+                            </option>
+
+                            <option value="Technical Review">
+                                Technical Review
+                            </option>
+
+                            <option value="Committee Review">
+                                Committee Review
+                            </option>
+
+                            <option value="Final Decision">
+                                Final Decision
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Status</label>
+
+                        <select id="stageStatus" required>
+
+                            <option value="SUBMITTED">
+                                Submitted
+                            </option>
+
+                            <option value="UNDER_REVIEW">
+                                Under Review
+                            </option>
+
+                            <option value="APPROVED">
+                                Approved
+                            </option>
+
+                            <option value="REJECTED">
+                                Rejected
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Committee Remarks</label>
+
+                        <textarea
+                                id="stageRemarks"
+                                placeholder="Enter committee remarks..."
+                        ></textarea>
+
+                    </div>
+
+                    <button class="primary-button" type="submit">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Stage
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Application Progress</h3>
+                        <p>Current review stages</p>
+                    </div>
+
+                    <button
+                            class="icon-button"
+                            onclick="loadStages()"
+                            title="Refresh"
+                    >
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+
+                </div>
+
+                <div id="stageCards" class="stage-list">
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= EXPENDITURES ================= -->
+
+    <section id="expenditures" class="page-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">BUDGET UTILIZATION</span>
+                <h2>Expenditure Tracking</h2>
+                <p>
+                    Record expenses against approved research grants.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="content-grid">
+
+            <div class="panel form-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Log Expenditure</h3>
+                        <p>
+                            Only approved grants can record expenditure.
+                        </p>
+                    </div>
+
+                </div>
+
+                <form id="expenditureForm">
+
+                    <div class="form-group">
+
+                        <label>Application</label>
+
+                        <select id="expenditureApplication" required>
+
+                            <option value="">
+                                Select Approved Application
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Description</label>
+
+                        <input
+                                type="text"
+                                id="expenditureDescription"
+                                placeholder="Laboratory Equipment"
+                                required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Amount</label>
+
+                        <input
+                                type="number"
+                                id="expenditureAmount"
+                                min="1"
+                                placeholder="50000"
+                                required
+                        >
+
+                    </div>
+
+                    <button class="primary-button" type="submit">
+
+                        <i class="fa-solid fa-wallet"></i>
+
+                        Record Expenditure
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Expenditure Records</h3>
+                        <p>Recorded grant utilization.</p>
+                    </div>
+
+                    <button
+                            class="icon-button"
+                            onclick="loadExpenditures()"
+                            title="Refresh"
+                    >
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Application</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="expenditureTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= DEADLINES ================= -->
+
+    <section id="deadlines" class="page-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">DEADLINE MONITORING</span>
+
+                <h2>Near Deadline Grants</h2>
+
+                <p>
+                    Applications whose deadlines are approaching
+                    within the next seven days.
+                </p>
+
+            </div>
+
+            <button
+                    class="primary-button"
+                    onclick="loadNearDeadline()"
+            >
+                <i class="fa-solid fa-rotate"></i>
+                Refresh
+            </button>
+
+        </div>
+
+
+        <div id="deadlineCards" class="deadline-grid">
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= TOAST ================= -->
+
+<div id="toast" class="toast">
+
+    <div class="toast-icon">
+        <i class="fa-solid fa-check"></i>
+    </div>
+
+    <div>
+        <strong id="toastTitle">Success</strong>
+        <p id="toastMessage">Operation completed.</p>
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
