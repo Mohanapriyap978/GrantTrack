@@ -9,6 +9,4 @@ public class GranttrackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GranttrackApplication.class, args);
 	} 
-	
-
 }
